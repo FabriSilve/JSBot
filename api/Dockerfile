@@ -6,4 +6,4 @@ WORKDIR /usr/src/app
 RUN npm install -g nodemon
 
 EXPOSE 3000
-CMD [ "npm", "start" ]
+CMD [ "npm", "dev" ]

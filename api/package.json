@@ -8,24 +8,11 @@
     "lint": "eslint ./src/",
     "test": "npm run lint && npm run jest",
     "jest": "jest",
-    "start": "node ./src/app.js"
+    "start": "node ./src/app.js",
+    "eslint": "eslint"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/FabriSilve/JSBot.git"
-  },
-  "keywords": [
-    "javascript",
-    "node",
-    "bot",
-    "telegram"
-  ],
   "author": "Fabrizio Silvestri",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/FabriSilve/JSBot/issues"
-  },
-  "homepage": "https://github.com/FabriSilve/JSBot#readme",
   "dependencies": {
     "axios": "^0.18.0",
     "body-parser": "^1.19.0",
@@ -34,6 +21,8 @@
   },
   "devDependencies": {
     "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.3",
     "jest": "^24.8.0",
     "nodemon": "^1.19.1"
   }

@@ -6,6 +6,8 @@ services:
      - "6300:6300"
   api:
     build: ./api/
+    environment:
+      PORT: "6200"
     ports:
       - "6200:6200"
     volumes:
