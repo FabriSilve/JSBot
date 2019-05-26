@@ -16,10 +16,11 @@ class BotClient {
     return data;
   }
 
-  async setWebhook() {
+  setWebhook() {
     const { url, token, botUrl } = this.configs;
     const data = { url: botUrl };
-    await axios.post(`${url}${token}/setwebhook`, data);
+    axios.post(`${url}${token}/setwebhook`, data)
+      .catch(error => new Error('Impossible set webhook', error));
   }
 
   async sendMessage({ chatId, message }) {
