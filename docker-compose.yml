@@ -7,10 +7,13 @@ services:
   api:
     build: ./api/
     environment:
+      TELEGRAM_URL: "https://api.telegram.org/bot"
+      BOT_URL: "https://1f913c5f.ngrok.io/bot"
+      BOT_TOKEN: "863079602:AAF6MKS2G3byyEgHFAzlY8zEmjG22NO7dAA"
       PORT: "6200"
     ports:
       - "6200:6200"
     volumes:
-      - ./api:/usr/src/app
+      - ./api:/usr/src/app:delegated
     depends_on:
       - mongodb
