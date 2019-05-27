@@ -1,0 +1,39 @@
+version: 2
+jobs:
+  api:
+    working_directory: ~/repo
+
+    docker:
+      - image: circleci/node:8
+      - image: mongo:3.6
+
+    environment:
+      environment: 'test'
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - api-{{ .Branch }}-{{ checksum "api/package.json" }}
+            - api-{{ .Branch }}
+            - api-production-{{ checksum "api/package.json" }}
+            - api-production
+
+      - run:
+          name: Install dependencies
+          command: cd api && npm install
+
+      - save_cache:
+          key: api-{{ .Branch }}-{{ checksum "api/package.json" }}
+          paths:
+            - api/node_modules
+
+      - run:
+          name: Run tests
+          command: cd api && npm run test -- -- --coverage -w=2
+
+workflows:
+  version: 2
+  stack:
+    jobs:
+      - api
