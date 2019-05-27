@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "nodemon ./src/app.js",
     "lint": "eslint ./src/",
-    "test": "npm run lint && npm run jest",
+    "test": "npm run lint && npm run jest && npm run coverage",
     "jest": "jest",
+    "coverage": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "start": "node ./src/app.js",
     "eslint": "eslint"
   },
@@ -20,6 +21,7 @@
     "mongoose": "^5.5.11"
   },
   "devDependencies": {
+    "coveralls": "^3.0.3",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.17.3",
