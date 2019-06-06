@@ -1,4 +1,4 @@
-const chatTypes = require('../constants/chatTypes');
+// const chatTypes = require('../constants/chatTypes');
 
 class Message {
   constructor(message) {
@@ -13,36 +13,36 @@ class Message {
       languageCode: message.from.language_code,
     };
     this.chat = {
-      // COMON
+      // COMMON
       id: message.chat.id,
       type: message.chat.type,
       // GROUP
-      title: message.chat.title,
+      // title: message.chat.title,
       // PRIVATE
-      firstName: message.chat.first_name,
-      lastName: message.chat.last_name,
-      username: message.chat.username,
+      // firstName: message.chat.first_name,
+      // lastName: message.chat.last_name,
+      // username: message.chat.username,
     };
 
-    this.entities = message.entities;
+    // this.entities = message.entities;
 
     // GROUP
-    if (this.chat.type === chatTypes.SUPERGROUP) {
-      this.newChatParticipant = {
-        id: message.new_chat_participant.id,
-        isBot: message.new_chat_participant.is_bot,
-        firstName: message.new_chat_participant.first_name,
-        lastName: message.new_chat_participant.last_name,
-        username: message.new_chat_participant.username,
-      };
-      this.newChatMember = {
-        id: message.new_chat_member.id,
-        isBot: message.new_chat_member.is_bot,
-        firstName: message.new_chat_member.first_name,
-        lastName: message.new_chat_member.last_name,
-        username: message.new_chat_member.username,
-      };
-    }
+    // if (this.chat.type === chatTypes.SUPERGROUP) {
+    //   this.newChatParticipant = {
+    //     id: message.new_chat_participant.id,
+    //     isBot: message.new_chat_participant.is_bot,
+    //     firstName: message.new_chat_participant.first_name,
+    //     lastName: message.new_chat_participant.last_name,
+    //     username: message.new_chat_participant.username,
+    //   };
+    //   this.newChatMember = {
+    //     id: message.new_chat_member.id,
+    //     isBot: message.new_chat_member.is_bot,
+    //     firstName: message.new_chat_member.first_name,
+    //     lastName: message.new_chat_member.last_name,
+    //     username: message.new_chat_member.username,
+    //   };
+    // }
   }
 
   toString() {
