@@ -4,10 +4,9 @@ const bodyParser = require('./utils/bodyParser');
 const getMe = require('./utils/getMe');
 const processAnswer = require('./utils/processAnswer');
 const isCommands = require('./utils/isCommands');
+const Bot = require('./client');
 
-
-// const Bot = require('./client');
-// Bot.setWebhook();
+Bot.setWebhook();
 const botRouter = Router();
 
 botRouter.get('/', asyncMiddleware(getMe));

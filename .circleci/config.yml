@@ -4,7 +4,7 @@ jobs:
     working_directory: ~/repo
 
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:10
       - image: mongo:3.6
 
     environment:
@@ -37,6 +37,10 @@ jobs:
       - run:
           name: Send coverage report
           command: cd api && npm run sendCoverageReport
+
+      - run:
+          name: Clean coverage report
+          command: cd api && rm -rf coverage
 
 workflows:
   version: 2
