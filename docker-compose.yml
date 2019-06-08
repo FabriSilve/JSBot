@@ -3,11 +3,12 @@ services:
   mongodb:
     image: "mongo"
     ports:
-     - "6300:6300"
+     - "6300:27017"
   api:
     build: ./api/
     environment:
       TELEGRAM_URL: "https://api.telegram.org/bot"
+      MONGO_URL: "mongodb://mongodb:27017/test"
       BOT_URL: "https://b34deb3a.ngrok.io/bot"
       BOT_TOKEN: "863079602:AAF6MKS2G3byyEgHFAzlY8zEmjG22NO7dAA"
       PORT: "6200"

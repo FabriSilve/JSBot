@@ -1,15 +1,16 @@
 const Answer = require('./Answer');
 
+// NOTE: USELESS
 class Command {
   constructor(obj) {
     this.input = obj.input;
+    this.regex = new RegExp(`^/${this.input}`, 'gi');
     this.answers = obj.answers
       .map(answer => new Answer(answer));
   }
 
   test(text) {
-    const regex = new RegExp(`^/${this.input}`, 'gi');
-    return text.match(regex);
+    return text.match(this.regex);
   }
 
   static match(text) {

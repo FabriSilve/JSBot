@@ -2,7 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const botRouter = require('./bot/router');
-// TODO: connect to db
+const connectMongoose = require('./utils/connectMongoose');
+
+connectMongoose();
 
 const server = express();
 server.use(bodyParser.json());
