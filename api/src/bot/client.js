@@ -28,6 +28,7 @@ class BotClient {
     const data = {
       chat_id: chatId,
       text: message,
+      parse_mode: 'Markdown'
     };
     await axios.post(`${url}/sendMessage`, data);
   }
