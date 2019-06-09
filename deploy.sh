@@ -51,3 +51,5 @@ git checkout -b master
 git add .
 git commit -m "Deploy ${DATE}"
 git push -f
+
+rm -rf $BUILD_DIRECTORY
