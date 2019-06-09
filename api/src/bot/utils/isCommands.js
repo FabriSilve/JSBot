@@ -10,7 +10,10 @@ const isCommand = async (req, res, next) => {
   if (!isItACommand(text)) return next();
   const command = commands
     .filter(com => com.isMatching(text));
-  if (command.length) req.answers = command[0].answers;
+  if (command.length) {
+    req.input = command[0].input;
+    req.answers = command[0].answers;
+  }
   return next();
 };
 module.exports = isCommand;
