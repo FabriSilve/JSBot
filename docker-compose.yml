@@ -4,17 +4,35 @@ services:
     image: "mongo"
     ports:
      - "6300:27017"
+
   api:
     build: ./api/
     environment:
-      TELEGRAM_URL: "https://api.telegram.org/bot"
+      # TELEGRAM_URL: "https://api.telegram.org/bot<TOKEN>"
+      TELEGRAM_URL: "http://mock-telegram:6201/bot123"
+      # USE NGROK URL FOR LOCAL TESTING
+      BOT_URL: "http://mock-telegram:6200/bot"
       MONGO_URL: "mongodb://mongodb:27017/test"
-      BOT_URL: "https://b34deb3a.ngrok.io/bot"
-      BOT_TOKEN: "863079602:AAF6MKS2G3byyEgHFAzlY8zEmjG22NO7dAA"
       PORT: "6200"
     ports:
       - "6200:6200"
     volumes:
       - ./api:/usr/src/app:delegated
+      - api_node_modules:/usr/src/app/node_modules:delegated
     depends_on:
       - mongodb
+
+  mock-telegram:
+    build: ./telegram
+    command: npm run dev
+    environment:
+      PORT: "6201"
+    volumes:
+      - ./telegram:/usr/src/app:delegated
+      - telegram_node_modules:/usr/src/app/node_modules:delegated
+    ports:
+      - "6201:6201"
+
+volumes:
+  api_node_modules:
+  telegram_node_modules:
