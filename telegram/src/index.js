@@ -8,10 +8,18 @@ const mockLog = (strings) => {
   console.log('#\n##########################################\n');
 }
 
-router.post('/:botToken/getMe', async (req, res) => {
+router.get('/:botToken/getMe', async (req, res) => {
   mockLog('getMe');
   res.statusCode = 200;
-  res.end();
+  res.end(JSON.stringify({
+    ok:true,
+    result: {
+      id:751531277,
+      is_bot:true,
+      first_name:"JsBotMock",
+      username:"JsBotMock"
+    }
+  }));
 });
 
 router.post('/:botToken/setwebhook', async (req, res) => {

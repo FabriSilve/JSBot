@@ -8,6 +8,8 @@ const parseData = (req, res, next) => {
   }
   res.json({});
   req.message = new Message(message);
+  req.chatId = req.message.chat.id;
+  req.text = req.message.text;
   next();
 };
 

@@ -9,7 +9,7 @@ connectMongoose();
 const server = express();
 server.use(bodyParser.json());
 
-server.get('/status', (req, res) => res.json({ status: 'OK' }));
+server.get('/', (req, res) => res.json({ status: 'OK' }));
 server.use('/bot', botRouter);
 
 module.exports = server;
