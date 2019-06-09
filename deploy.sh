@@ -2,7 +2,6 @@ BUILD_DIRECTORY="JsBotBuild"
 DATE=`date '+%Y-%m-%d %H:%M'`
 
 ENVIRONMENT=${1:-'STAGING'}
-echo $ENVIRONMENT
 
 DEMOURL="https://git.heroku.com/js-bot-demo.git"
 STAGINGURL="https://git.heroku.com/js-bot-staging.git"
@@ -47,7 +46,7 @@ cp -R api/src $BUILD_DIRECTORY/
 
 cd $BUILD_DIRECTORY
 git init
-git remote add origin https://git.heroku.com/js-bot-staging.git
+git remote add origin $ORIGIN
 git checkout -b master
 git add .
 git commit -m "Deploy ${DATE}"
