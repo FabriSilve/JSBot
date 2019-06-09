@@ -11,20 +11,20 @@ class BotClient {
   }
 
   async getMe() {
-    const { url, token } = this.configs;
+    const { url } = this.configs;
     const { data } = await axios.get(`${url}/getMe`);
     return data;
   }
 
   setWebhook() {
-    const { url, token, botUrl } = this.configs;
+    const { url, botUrl } = this.configs;
     const data = { url: botUrl };
     axios.post(`${url}/setwebhook`, data)
       .catch(error => new Error('Impossible set webhook', error));
   }
 
   async sendMessage({ chatId, message }) {
-    const { url, token } = this.configs;
+    const { url } = this.configs;
     const data = {
       chat_id: chatId,
       text: message,

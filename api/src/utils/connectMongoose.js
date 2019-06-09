@@ -6,12 +6,10 @@ let numOfTry = 0;
 const MAX_TRY = 3;
 
 // Retry connection
-const connectWithRetry = () => {
-  return mongoose.connect(configs.mongo.uri, configs.mongo.options);
-};
+const connectWithRetry = () => mongoose.connect(configs.mongo.uri, configs.mongo.options);
 
 // Exit application on error
-mongoose.connection.on('error', (err) => {
+mongoose.connection.on('error', () => {
   setTimeout(connectWithRetry, 3000);
   numOfTry += 1;
   if (numOfTry > MAX_TRY) process.exit(-1);
