@@ -2,8 +2,8 @@ const axios = require('axios');
 const configs = require('./configs');
 
 class BotClient {
-  constructor({ url, token, botUrl }) {
-    this.configs = { url, token, botUrl };
+  constructor({ url, botUrl }) {
+    this.configs = { url, botUrl };
   }
 
   getConfigs() {
@@ -11,33 +11,32 @@ class BotClient {
   }
 
   async getMe() {
-    const { url, token } = this.configs;
-    const { data } = await axios.get(`${url}${token}/getMe`);
+    const { url } = this.configs;
+    const { data } = await axios.get(`${url}/getMe`);
     return data;
   }
 
   setWebhook() {
-    const { url, token, botUrl } = this.configs;
+    const { url, botUrl } = this.configs;
     const data = { url: botUrl };
-    axios.post(`${url}${token}/setwebhook`, data)
+    axios.post(`${url}/setwebhook`, data)
       .catch(error => new Error('Impossible set webhook', error));
   }
 
   async sendMessage({ chatId, message }) {
-    const { url, token } = this.configs;
+    const { url } = this.configs;
     const data = {
       chat_id: chatId,
       text: message,
     };
-    await axios.post(`${url}${token}/sendMessage`, data);
+    await axios.post(`${url}/sendMessage`, data);
   }
 }
 
-const { telegramUrl, botToken, botUrl } = configs;
+const { telegramUrl, botUrl } = configs;
 
 const botConfigs = {
   url: telegramUrl,
-  token: botToken,
   botUrl,
 };
 
