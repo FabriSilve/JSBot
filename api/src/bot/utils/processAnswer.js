@@ -5,7 +5,7 @@ const processAnswer = async (req) => {
     const chatId = req.message.chat.id;
     const data = {
       chatId,
-      message: req.answers[0].value,
+      text: req.answers[0].value,
     };
     await Bot.sendMessage(data);
   }
