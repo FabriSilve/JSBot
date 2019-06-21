@@ -9,7 +9,8 @@ services:
     build: ./test/
     environment:
       # TELEGRAM_URL: "https://api.telegram.org/bot<TOKEN>"
-      TELEGRAM_URL: "http://mock-telegram:6201/bot123"
+      TELEGRAM_URL: "http://mock-telegram:6201/bot"
+      BOT_TOKEN: '123'
       # USE NGROK URL FOR LOCAL TESTING
       BOT_URL: "http://mock-telegram:6200/bot"
       MONGO_URL: "mongodb://mongodb:27017/test"

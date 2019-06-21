@@ -6,5 +6,5 @@ WORKDIR /usr/src/app
 RUN npm install -g nodemon ts-node typescript
 
 EXPOSE 6200
-CMD [ "npm", "install" ]
+
 CMD [ "npm", "run", "dev" ]
