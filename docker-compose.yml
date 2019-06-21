@@ -6,7 +6,7 @@ services:
      - "6300:27017"
 
   api:
-    build: ./api/
+    build: ./test/
     environment:
       # TELEGRAM_URL: "https://api.telegram.org/bot<TOKEN>"
       TELEGRAM_URL: "http://mock-telegram:6201/bot123"
@@ -17,7 +17,7 @@ services:
     ports:
       - "6200:6200"
     volumes:
-      - ./api:/usr/src/app:delegated
+      - ./test:/usr/src/app:delegated
       - api_node_modules:/usr/src/app/node_modules:delegated
     depends_on:
       - mongodb
