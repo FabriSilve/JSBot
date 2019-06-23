@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import axios from 'axios';
 
-interface Arguments {
+interface IArguments {
   chatId: string
   text?: string
   photo?: string
@@ -30,51 +30,91 @@ enum TriggerTypes {
   REGEX = 'regex',
 }
 
-interface Answer {
+interface IAnswer {
   value: String,
-  answerType?: AnswerTypes,
-
-  arguments?: boolean,
+  answerType: AnswerTypes,
 }
 
-interface Trigger {
+interface ITrigger {
     input: string,
-    aswers: Array<Answer>,
+    answers: Array<IAnswer>,
     type: TriggerTypes,
+
+    match: (text : string) => boolean;
 }
 
-interface Message {
+interface IMessage {
   chat: {
     id: string,
   },
   text: string,
 }
 
+class Trigger implements ITrigger {
+  input: string;
+  answers: Array<IAnswer>;
+  type: TriggerTypes;
+
+  constructor(trigger : ITrigger) {
+    this.input = trigger.input;
+    this.answers = trigger.answers;
+    this.type = trigger.type;
+  }
+
+  match(text : string) {
+    switch (this.type) {
+      case TriggerTypes.COMMAND:
+        return new RegExp(`/${this.input}.*`, 'gi').test(text);
+      case TriggerTypes.REGEX:
+        return new RegExp(`(^${this.input} .*|.* ${this.input}$|.* ${this.input} .*)`, 'gi')
+          .test(text);
+      default:
+        return false;
+    }
+  }
+}
+
+class Message {
+  chatId: string;
+  text: string;
+
+  constructor(message : IMessage) {
+    this.chatId = message.chat.id;
+    this.text = message.text;
+  }
+}
+
+interface IBotConfigs {
+  telegram?: string,
+  token?: string,
+  botUrl?: string,
+}
+
 class Client {
   url: string;
-  triggers: Array<Trigger>;
+  triggers: Array<ITrigger>;
   
   /**
    * @param telegram Destination url to call telegram methods
    * @param token Bot token needed to auth the calls
    * @param botUrl Bot url to set where telegram have to send events
    */
-  constructor (telegram : string, token : string, botUrl : string) {
-    if (!telegram) throw new Error('Client need telegram url');
-    if (!token) throw new Error('Client need bot token');
-    if (!botUrl) throw new Error('Client need bot url');
-    this.url = telegram + token;
+  constructor (configs : IBotConfigs) {
+    if (!configs.telegram) throw new Error('Client need telegram url');
+    if (!configs.token) throw new Error('Client need bot token');
+    if (!configs.botUrl) throw new Error('Client need bot url');
+    this.url = configs.telegram + configs.token;
     this.triggers = [];
 
-    axios.post(`${this.url}/setwebhook`, { url: botUrl })
+    axios.post(`${this.url}/setwebhook`, { url: configs.botUrl })
     .catch(() => new Error('Impossible set webhook'));
   }
 
-  setTriggers(triggers : [Trigger]) {
+  setTriggers(triggers : [ITrigger]) {
     this.triggers = triggers;
   }
 
-  addTrigger(trigger : Trigger) {
+  addTrigger(trigger : ITrigger) {
       this.triggers.push(trigger);
   }
 
@@ -83,7 +123,7 @@ class Client {
     return data;
   }
 
-  async send(args: Arguments) : Promise<object> {
+  async send(args: IArguments) : Promise<object> {
     const body = {
     ...args,
     chat_id: args.chatId,
@@ -103,8 +143,23 @@ class Client {
     return data;
   }
 
-  processMessage(req : Request, res : Response) {
-    // TODO handle the request here
-  }
+  async processMessage(req : Request, res : Response) : Promise<void> {
+    const { message: received } = req.body;
+    if (!received) {
+      res.status(400).json({ error: 'No message object in body' });
+      return;
+    }
+    res.json({});
+    const message = new Message(received);
 
+    console.log(this);
+    
+    // if (this.triggers) {
+    //   const matches = this.triggers.filter(trigger => trigger.match(message.text));
+  
+    //   console.log(matches);
+    // }
+  }
 }
+
+export default Client;

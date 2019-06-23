@@ -5,17 +5,18 @@ const configs = {
   telegramUrl: process.env.TELEGRAM_URL,
   // DB
   mongo: {
-  uri: process.env.MONGO_URL || 'mongodb://mongodb:27017/test',
-  options: {
-  promiseLibrary: Promise,
-  useCreateIndex: true,
-  useNewUrlParser: true,
-  },
+    uri: process.env.MONGO_URL || 'mongodb://mongodb:27017/test',
+    options: {
+      promiseLibrary: Promise,
+      useCreateIndex: true,
+      useNewUrlParser: true,
+    },
   },
   bot: {
-  url: process.env.BOT_URL,
-  }
-
+    telegram: process.env.TELEGRAM_URL,
+    token: process.env.BOT_TOKEN,
+    botUrl: process.env.BOT_URL,
+  },
 };
 
 export default configs;
