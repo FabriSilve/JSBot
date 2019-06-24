@@ -31,8 +31,8 @@ enum TriggerTypes {
 }
 
 interface IAnswer {
-  value: String,
-  answerType: AnswerTypes,
+  value: string,
+  type: AnswerTypes,
 }
 
 interface ITrigger {
@@ -50,15 +50,25 @@ interface IMessage {
   text: string,
 }
 
+class Answer implements IAnswer {
+  value: string;
+  type: AnswerTypes;
+
+  constructor(value: string, type: AnswerTypes) {
+    this.value = value;
+    this.type = type;
+  }
+}
+
 class Trigger implements ITrigger {
   input: string;
   answers: Array<IAnswer>;
   type: TriggerTypes;
 
-  constructor(trigger : ITrigger) {
-    this.input = trigger.input;
-    this.answers = trigger.answers;
-    this.type = trigger.type;
+  constructor(input : string, answers : Array<IAnswer>, type: TriggerTypes) {
+    this.input = input;
+    this.answers = answers;
+    this.type = type;
   }
 
   match(text : string) {
@@ -90,6 +100,10 @@ interface IBotConfigs {
   botUrl?: string,
 }
 
+
+const simpleAnswer = new Answer('Ciao mamma', AnswerTypes.TEXT);
+const simpleTrigger = new Trigger('start', [simpleAnswer], TriggerTypes.COMMAND);
+
 class Client {
   url: string;
   triggers: Array<ITrigger>;
@@ -104,10 +118,12 @@ class Client {
     if (!configs.token) throw new Error('Client need bot token');
     if (!configs.botUrl) throw new Error('Client need bot url');
     this.url = configs.telegram + configs.token;
-    this.triggers = [];
+    this.triggers = [simpleTrigger];
 
     axios.post(`${this.url}/setwebhook`, { url: configs.botUrl })
     .catch(() => new Error('Impossible set webhook'));
+
+    this.processMessage = this.processMessage.bind(this);
   }
 
   setTriggers(triggers : [ITrigger]) {
@@ -130,7 +146,6 @@ class Client {
     parse_mode: args.parseMode || 'Markdown',
     disable_notification: args.disableNotification || false,
     };
-    let method : string = '';
     if ('text' in args) return await this.call(Methods.TEXT, body);
     else if ('audio' in args) return await this.call(Methods.AUDIO, body);
     else if ('video' in args) return await this.call(Methods.VIDEO, body);
@@ -139,7 +154,7 @@ class Client {
   }
 
   private async call(method : string, body : object) : Promise<object> {
-    const { data } = await axios.post(`${this.url}/${method}`, body);
+    const { data } = await axios.post(`${this.url}${method}`, body);
     return data;
   }
 
@@ -150,15 +165,19 @@ class Client {
       return;
     }
     res.json({});
-    const message = new Message(received);
 
-    console.log(this);
-    
-    // if (this.triggers) {
-    //   const matches = this.triggers.filter(trigger => trigger.match(message.text));
-  
-    //   console.log(matches);
-    // }
+    const message = new Message(received);
+    const matches = this.triggers.filter(trigger => trigger.match(message.text));
+
+    if (matches.length > 0) {
+      const [matched] = matches;
+      const [answer] = matched.answers;
+      await this.send({
+        chatId: message.chatId,
+        [answer.type]: answer.value,
+      });
+      console.log(answer);   
+    }
   }
 }
 

@@ -40,9 +40,9 @@ fi
 
 rm -rf $BUILD_DIRECTORY
 mkdir $BUILD_DIRECTORY
-cp api/package.json $BUILD_DIRECTORY/package.json
-cp api/package-lock.json $BUILD_DIRECTORY/package-lock.json
-cp -R api/src $BUILD_DIRECTORY/
+cp TSApi/package.json $BUILD_DIRECTORY/package.json
+cp TSApi/package-lock.json $BUILD_DIRECTORY/package-lock.json
+cp -R TSApi/src $BUILD_DIRECTORY/
 
 cd $BUILD_DIRECTORY
 git init
