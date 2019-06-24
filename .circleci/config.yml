@@ -1,46 +1,5 @@
 version: 2
 jobs:
-  # api:
-  #   working_directory: ~/repo
-
-  #   docker:
-  #     - image: circleci/node:10
-  #     - image: mongo:3.6
-
-  #   environment:
-  #     environment: 'test'
-  #     COVERALLS_REPO_TOKEN: 'wHig9mDejonNwbBoAU7C3lD1Tpf51X7Nb'
-
-  #   steps:
-  #     - checkout
-
-  #     - restore_cache:
-  #         keys:
-  #           - api-{{ .Branch }}-{{ checksum "api/package.json" }}
-  #           - api-{{ .Branch }}
-  #           - api-production-{{ checksum "api/package.json" }}
-  #           - api-production
-
-  #     - run:
-  #         name: Install dependencies
-  #         command: cd api && npm install
-
-  #     - save_cache:
-  #         key: api-{{ .Branch }}-{{ checksum "api/package.json" }}
-  #         paths:
-  #           - api/node_modules
-
-  #     - run:
-  #         name: Run tests
-  #         command: cd api && npm run test -- -- --coverage -w=2
-
-  #     - run:
-  #         name: Send coverage report
-  #         command: cd api && npm run sendCoverageReport
-
-  #     - run:
-  #         name: Clean coverage report
-  #         command: cd api && rm -rf coverage
   TSApi:
     working_directory: ~/repo
 
@@ -87,5 +46,4 @@ workflows:
   version: 2
   stack:
     jobs:
-      # - api
       - TSApi
