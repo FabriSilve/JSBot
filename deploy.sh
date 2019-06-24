@@ -42,10 +42,8 @@ rm -rf $BUILD_DIRECTORY
 mkdir $BUILD_DIRECTORY
 cp TSApi/package.json $BUILD_DIRECTORY/package.json
 cp TSApi/package-lock.json $BUILD_DIRECTORY/package-lock.json
-
-cd TSApi
-npm run build
-cp -R TSApi/dist $BUILD_DIRECTORY/
+cp TSApi/tsconfig.json $BUILD_DIRECTORY/tsconfig.json
+cp -R TSApi/src $BUILD_DIRECTORY/src
 
 cd $BUILD_DIRECTORY
 git init

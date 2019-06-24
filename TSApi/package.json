@@ -1,5 +1,5 @@
 {
-  "name": "test",
+  "name": "tsapi",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
@@ -8,9 +8,9 @@
     "coveralls": "coveralls",
     "jest": "jest",
     "start": "node dist/index.js",
+    "postinstall": "npm run build",
     "dev": "nodemon src/index.ts",
-    "build": "tsc -p .",
-    "test": "npm run jest",
+    "build": "tsc",
     "sendCoverageReport": "npm run jest -- --coverage --collectCoverageFrom=**/*.js && npm run coveralls < ./coverage/lcov.info && rm -rf ./coverage"
   },
   "keywords": [],
