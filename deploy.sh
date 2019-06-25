@@ -53,4 +53,5 @@ git add .
 git commit -m "Deploy ${DATE}"
 git push -f
 
+cd ..
 rm -rf $BUILD_DIRECTORY
