@@ -7,6 +7,7 @@ export interface ITrigger {
   type: triggerTypes,
 
   match: (text : string) => boolean;
+  getAnswer: () => IAnswer;
 }
 
 class Trigger implements ITrigger {
@@ -30,6 +31,13 @@ class Trigger implements ITrigger {
       default:
         return false;
     }
+  }
+
+  getAnswer() {
+    console.log(this.answers.length);
+    const randomIndex = Math.round(Math.random() * (this.answers.length - 1));
+    console.log(randomIndex);
+    return this.answers[randomIndex];
   }
 }
 

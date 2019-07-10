@@ -29,9 +29,10 @@ export interface IArguments {
 }
 
 // NOTE: Temporaly
-const textAnswer = new Answer('Text Anser', answerTypes.TEXT);
+const textAnswer1 = new Answer('Text Anser 1', answerTypes.TEXT);
+const textAnswer2 = new Answer('Text Anser 2', answerTypes.TEXT);
 const audioAnswer = new Answer('Audio Anser', answerTypes.AUDIO);
-const commandText = new Trigger('text', [textAnswer], triggerTypes.COMMAND);
+const commandText = new Trigger('text', [textAnswer1, textAnswer2], triggerTypes.COMMAND);
 const commandAudio = new Trigger('audio', [audioAnswer], triggerTypes.COMMAND);
 
 
@@ -102,7 +103,7 @@ class Client {
 
     if (matches.length > 0) {
       const [matched] = matches;
-      const [answer] = matched.answers;
+      const answer = matched.getAnswer();
       await this.send({
         chatId: message.chatId,
         [answer.type]: answer.value,
