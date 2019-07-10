@@ -29,8 +29,10 @@ export interface IArguments {
 }
 
 // NOTE: Temporaly
-const simpleAnswer = new Answer('Ciao mamma', answerTypes.TEXT);
-const simpleTrigger = new Trigger('start', [simpleAnswer], triggerTypes.COMMAND);
+const textAnswer = new Answer('Text Anser', answerTypes.TEXT);
+const audioAnswer = new Answer('Audio Anser', answerTypes.AUDIO);
+const commandText = new Trigger('text', [textAnswer], triggerTypes.COMMAND);
+const commandAudio = new Trigger('audio', [audioAnswer], triggerTypes.COMMAND);
 
 
 class Client {
@@ -47,7 +49,7 @@ class Client {
     if (!configs.token) throw new Error('Client need bot token');
     if (!configs.botUrl) throw new Error('Client need bot url');
     this.url = configs.telegram + configs.token;
-    this.triggers = [simpleTrigger];
+    this.triggers = [commandText, commandAudio];
 
     axios.post(`${this.url}/setwebhook`, { url: configs.botUrl })
     .catch(() => new Error('Impossible set webhook'));
