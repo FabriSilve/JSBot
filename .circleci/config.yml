@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  TSApi:
+  api:
     working_directory: ~/repo
 
     docker:
@@ -16,34 +16,34 @@ jobs:
 
       - restore_cache:
           keys:
-            - TSApi-{{ .Branch }}-{{ checksum "TSApi/package.json" }}
-            - TSApi-{{ .Branch }}
-            - TSApi-production-{{ checksum "TSApi/package.json" }}
-            - TSApi-production
+            - api-{{ .Branch }}-{{ checksum "api/package.json" }}
+            - api-{{ .Branch }}
+            - api-production-{{ checksum "api/package.json" }}
+            - api-production
 
       - run:
           name: Install dependencies
-          command: cd TSApi && npm install
+          command: cd api && npm install
 
       - save_cache:
-          key: TSApi-{{ .Branch }}-{{ checksum "TSApi/package.json" }}
+          key: api-{{ .Branch }}-{{ checksum "api/package.json" }}
           paths:
-            - TSApi/node_modules
+            - api/node_modules
 
       - run:
           name: Run tests
-          command: cd TSApi && npm run test -- -- --coverage -w=2
+          command: cd api && npm run test -- -- --coverage -w=2
 
       - run:
           name: Send coverage report
-          command: cd TSApi && npm run sendCoverageReport
+          command: cd api && npm run sendCoverageReport
 
       - run:
           name: Clean coverage report
-          command: cd TSApi && rm -rf coverage
+          command: cd api && rm -rf coverage
 
 workflows:
   version: 2
   stack:
     jobs:
-      - TSApi
+      - api

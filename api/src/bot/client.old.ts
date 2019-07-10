@@ -176,7 +176,6 @@ class Client {
         chatId: message.chatId,
         [answer.type]: answer.value,
       });
-      console.log(answer);   
     }
   }
 }
