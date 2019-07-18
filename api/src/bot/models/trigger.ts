@@ -35,7 +35,7 @@ export const TriggerSchema = new Schema({
   },
 });
 
-const TriggerDB = model<ITriggerDB>("Trigger", TriggerSchema);
+export const TriggerDB = model<ITriggerDB>("Trigger", TriggerSchema);
 
 
 // LOGIC Entities
