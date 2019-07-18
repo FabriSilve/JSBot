@@ -1,12 +1,10 @@
-import connectMongoose from '../utils/connectMongoose';
-import triggers from './triggers';
+import { connectMongoose } from '../utils/connectMongoose';
+import { seed } from './triggers';
 
-const runSeeds = async () => {
+export const runSeeds = async () => {
   await connectMongoose();
-  await triggers();
+  await seed();
   process.exit();
 };
 
 runSeeds();
-
-export default runSeeds;

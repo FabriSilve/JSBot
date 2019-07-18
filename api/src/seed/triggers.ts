@@ -6,39 +6,39 @@ import {
 } from '../bot/enums';
 
 const triggers = [{
+  answers: [{
+    type: answerTypes.TEXT,
+    value: 'text 1',
+  }],
   input: 'text',
   type: triggerTypes.COMMAND,
-  answers: [{
-    value: 'text 1',
-    type: answerTypes.TEXT,
-  }],
 }, {
+  answers: [{
+    type: answerTypes.TEXT,
+    value: 'text 1',
+  }, {
+    type: answerTypes.TEXT,
+    value: 'text 2',
+  }],
   input: 'random',
   type: triggerTypes.COMMAND,
-  answers: [{
-    value: 'text 1',
-    type: answerTypes.TEXT,
-  }, {
-    value: 'text 2',
-    type: answerTypes.TEXT,
-  }],
 }, {
+  answers: [{
+    type: answerTypes.AUDIO,
+    value: 'https://ccrma.stanford.edu/~jos/mp3/gtr-nylon22.mp3',
+  }],
   input: 'audio',
   type: triggerTypes.COMMAND,
-  answers: [{
-    value: 'https://ccrma.stanford.edu/~jos/mp3/gtr-nylon22.mp3',
-    type: answerTypes.AUDIO,
-  }],
 }, {
+  answers: [{
+    type: answerTypes.TEXT,
+    value: 'answer',
+  }],
   input: 'regex',
   type: triggerTypes.REGEX,
-  answers: [{
-    value: 'answer',
-    type: answerTypes.TEXT,
-  }],
 }];
 
-export default async () => {
+export const seed = async () => {
   const triggersPromises = triggers.map(async (trigger) => {
     const existingTrigger = await TriggerDB.findOne({ input: trigger.input, type: trigger.type });
 

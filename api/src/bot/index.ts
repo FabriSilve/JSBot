@@ -1,17 +1,16 @@
 import { Router, Response, Request } from 'express';
 
-import configs from '../configs';
-import Client from './client';
+import { configs } from '../configs';
+import { Client } from './client';
 
-const botRouter : Router = Router();
+
+export const botRouter: Router = Router();
 
 const bot = new Client(configs.bot);
 bot.loadTriggers();
 
-botRouter.get('/', (req : Request, res : Response) => {
+botRouter.get("/", (req: Request, res: Response) => {
   res.json(bot.getMe());
 });
 
-botRouter.post('/', bot.processMessage);
-
-export default botRouter;
+botRouter.post("/", bot.processMessage);

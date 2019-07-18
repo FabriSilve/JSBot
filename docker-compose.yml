@@ -13,7 +13,7 @@ services:
       BOT_TOKEN: '123'
       # USE NGROK URL FOR LOCAL TESTING
       BOT_URL: "http://mock-telegram:6200/bot"
-      MONGO_URL: "mongodb://mongodb:27017/dev"
+      BOT_DB: "mongodb://mongodb:27017/dev"
       PORT: "6200"
     ports:
       - "6200:6200"

@@ -1,60 +1,56 @@
 import { Document, Model, model, Schema } from 'mongoose';
 
+import { IAnswer } from './answer';
 import { triggerTypes, answerTypes } from '../enums';
+
 
 // DB Entities
 export interface ITriggerDB extends Document {
-  input: string,
-  answers: [{
-    value: string,
-    type: answerTypes,
-  }],
-  type: triggerTypes,
+  answers: Array<IAnswer>;
+  input: string;
+  type: triggerTypes;
 }
 
 export const TriggerSchema = new Schema({
-  input: {
-    type: String,
-    required: true,
-  },
   answers: [{
-    value: {
-      type: String,
-      required: true,
-    },
     type: {
-      type: String,
-      required: true,
       enum: Object.values(answerTypes),
+      required: true,
+      type: String,
+    },
+    value: {
+      required: true,
+      type: String,
     },
   }],
-  type: {
-    type: String,
+  input: {
     required: true,
+    type: String,
+  },
+  type: {
     enum: Object.values(triggerTypes),
+    required: true,
+    type: String,
   },
 });
 
 export const TriggerDB = model<ITriggerDB>("Trigger", TriggerSchema);
 
-
 // LOGIC Entities
 export interface ITrigger {
-  data: ITriggerDB;
-
-  match: (text : string) => boolean;
-  getAnswer: () => ITriggerDB["answers"][0];
+  match(text: string): boolean;
+  getAnswer(): IAnswer;
 }
 
-class Trigger implements ITrigger {
-  static db : Model<ITriggerDB> = TriggerDB;
-  data: ITriggerDB;
+export class Trigger implements ITrigger {
+  public static db: Model<ITriggerDB> = TriggerDB;
+  private data: ITriggerDB;
 
   constructor(data: ITriggerDB) {
     this.data = data;
   }
 
-  match(text : string) {
+  public match(text: string): boolean {
     const { type, input } = this.data;
     switch (type) {
       case triggerTypes.COMMAND:
@@ -68,11 +64,9 @@ class Trigger implements ITrigger {
   }
 
   // NOTE: Can I move this logic in the answer?
-  getAnswer() {
+  public getAnswer(): IAnswer {
     const { answers } = this.data;
     const randomIndex = Math.round(Math.random() * (answers.length - 1));
     return answers[randomIndex];
   }
 }
-
-export default Trigger;
