@@ -5,7 +5,7 @@ const configs = {
   telegramUrl: process.env.TELEGRAM_URL,
   // DB
   mongo: {
-    uri: process.env.MONGO_URL || 'mongodb://mongodb:27017/test',
+    uri: process.env.MONGO_URL || 'mongodb://mongodb:27017/dev',
     options: {
       promiseLibrary: Promise,
       useCreateIndex: true,
@@ -16,6 +16,7 @@ const configs = {
     telegram: process.env.TELEGRAM_URL,
     token: process.env.BOT_TOKEN,
     botUrl: process.env.BOT_URL,
+    botDB: process.env.MONGO_URL || 'mongodb://mongodb:27017/dev',
   },
 };
 

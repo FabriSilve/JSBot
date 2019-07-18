@@ -1,20 +1,16 @@
 import { Request, Response } from 'express';
 import axios from 'axios';
 
-import Trigger, { ITrigger } from './trigger';
-import Answer from './answer';
-import Message from './message';
-import {
-  answerTypes,
-  triggerTypes,
-  methods,
-} from './enums';
+import Trigger, { ITriggerDB, ITrigger } from './models/trigger';
+
+import { methods } from './enums';
 
 
 export interface IBotConfigs {
   telegram?: string,
   token?: string,
   botUrl?: string,
+  botDB?: string,
 }
 
 export interface IArguments {
@@ -28,18 +24,19 @@ export interface IArguments {
   disableNotification?: string
 }
 
-// NOTE: Temporaly
-const textAnswer1 = new Answer('Text Anser 1', answerTypes.TEXT);
-const textAnswer2 = new Answer('Text Anser 2', answerTypes.TEXT);
-const audioAnswer = new Answer('Audio Anser', answerTypes.AUDIO);
-const commandText = new Trigger('text', [textAnswer1, textAnswer2], triggerTypes.COMMAND);
-const commandAudio = new Trigger('audio', [audioAnswer], triggerTypes.COMMAND);
+export interface IMessage {
+  chat: {
+    id: string,
+  },
+  text: string,
+}
 
 
 class Client {
   url: string;
+  dbUrl: string;
   triggers: Array<ITrigger>;
-  
+
   /**
    * @param telegram Destination url to call telegram methods
    * @param token Bot token needed to auth the calls
@@ -49,8 +46,10 @@ class Client {
     if (!configs.telegram) throw new Error('Client need telegram url');
     if (!configs.token) throw new Error('Client need bot token');
     if (!configs.botUrl) throw new Error('Client need bot url');
+    if (!configs.botDB) throw new Error('Client need bot db url');
     this.url = configs.telegram + configs.token;
-    this.triggers = [commandText, commandAudio];
+    this.dbUrl = configs.botDB;
+    this.triggers = [];
 
     axios.post(`${this.url}/setwebhook`, { url: configs.botUrl })
     .catch(() => new Error('Impossible set webhook'));
@@ -58,12 +57,13 @@ class Client {
     this.processMessage = this.processMessage.bind(this);
   }
 
-  setTriggers(triggers : [ITrigger]) {
-    this.triggers = triggers;
-  }
-
-  addTrigger(trigger : ITrigger) {
-      this.triggers.push(trigger);
+  loadTriggers() {
+    Trigger.db.find({})
+      .then((triggers: any) =>
+        this.triggers = triggers
+          .map((item: ITriggerDB) => new Trigger(item))
+      )
+      .catch(err => { throw err; })
   }
 
   async getMe() : Promise<object> {
@@ -91,21 +91,22 @@ class Client {
   }
 
   async processMessage(req : Request, res : Response) : Promise<void> {
-    const { message: received } = req.body;
-    if (!received) {
+    const message : IMessage = req.body.message;
+    if (!message) {
       res.status(400).json({ error: 'No message object in body' });
       return;
     }
     res.json({});
 
-    const message = new Message(received);
-    const matches = this.triggers.filter(trigger => trigger.match(message.text));
+    // const message = new Message(received);
+    const matches = this.triggers
+      .filter(trigger => trigger.match(message.text));
 
     if (matches.length > 0) {
       const [matched] = matches;
       const answer = matched.getAnswer();
       await this.send({
-        chatId: message.chatId,
+        chatId: message.chat.id,
         [answer.type]: answer.value,
       });
     }
