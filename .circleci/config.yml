@@ -40,7 +40,7 @@ jobs:
 
       - run:
           name: Clean coverage report
-          command: cd api && rm -rf coverage
+          command: rm -rf api/coverage
 
 workflows:
   version: 2
