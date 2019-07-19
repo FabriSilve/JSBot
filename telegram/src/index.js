@@ -28,12 +28,12 @@ router.post('/:botToken/setwebhook', async (req, res) => {
   res.end();
 });
 
-router.post('/:botToken/sendMessage', async (req, res) => {
-  const { chat_id, text } = req.body;
+router.post('/:botToken/:endpoint', async (req, res) => {
+  const { body } = req;
+  const { endpoint } = req.params;
   mockLog([
-    'sendMessage',
-    `CHAT: ${chat_id}`,
-    `TEXT: ${text}`,
+    endpoint,
+    JSON.stringify(body, null, 2),
   ]);
   res.statusCode = 200;
   res.end();
